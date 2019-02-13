@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity() {
             //takes user to quiz activity
             val intent = Intent(this@MainActivity, QuestionsActivity::class.java)
             startActivityForResult(intent, REQUEST_CODE_QUESTIONS)
-
         }
         Log.d(TAG, "Current Score=$mScore")
     }
@@ -44,6 +43,12 @@ class MainActivity : AppCompatActivity() {
             if (resultCode == RESULT_OK) {
                 mScore = data?.getIntExtra(EXTRA_SCORE, 0)
                 Log.d(TAG, "onActivityResult called, requestCode=$requestCode, resultCode=$resultCode, score=$mScore")
+                if (mScore != -1) {
+                    scoreView.text = "Score: ${mScore.toString()}"
+                }
+            }
+            else {
+                Log.d(TAG, "RESULT_CANCELED returned")
             }
         }
     }

@@ -13,7 +13,8 @@ import kotlinx.android.synthetic.main.activity_questions.*
 import kotlinx.android.synthetic.main.fragment_questions.*
 import android.widget.RadioGroup
 
-
+//SCORE NOT ADDING UP PROPERLY, DOESN'T GET TO 4 even IF GOT 4 CORRECT
+//SHOULD CONSIDER HOW TO HANDLE SITUATION WHEN USER PRESSES BACK during quiz (maybe lock them from going back)
 
 class QuestionsActivity : AppCompatActivity() {
 
@@ -23,8 +24,8 @@ class QuestionsActivity : AppCompatActivity() {
     private val mQuestionArray = arrayOf(
         Questions(R.string.question1, R.string.answer1b, R.string.answer1a, R.string.answer1b, R.string.answer1c, R.string.answer1d),
         Questions(R.string.question2, R.string.answer2d, R.string.answer2a, R.string.answer2b, R.string.answer2c, R.string.answer2d),
-        Questions(R.string.question3, R.string.answer3a, R.string.answer4a, R.string.answer3b, R.string.answer3c, R.string.answer3d),
-        Questions(R.string.question4, R.string.answer4c, R.string.answer1a, R.string.answer4b, R.string.answer4c, R.string.answer4d)
+        Questions(R.string.question3, R.string.answer3a, R.string.answer3a, R.string.answer3b, R.string.answer3c, R.string.answer3d),
+        Questions(R.string.question4, R.string.answer4c, R.string.answer4a, R.string.answer4b, R.string.answer4c, R.string.answer4d)
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,6 +78,7 @@ class QuestionsActivity : AppCompatActivity() {
             else {
                 Log.d(TAG, "Not 3 yet, current question: $mCurrentQuestion")
                 mCurrentQuestion++
+                Log.d(TAG, "Current Question: $mCurrentQuestion")
                 Log.d(TAG, "replaceFragmentStack() called")
                 replaceFragment()
             }
@@ -144,7 +146,7 @@ class QuestionsActivity : AppCompatActivity() {
         fragment = QuestionFragment.newInstance()
         val args = Bundle()
         args.putSerializable("Question", mQuestionArray[mCurrentQuestion])
-        args.putInt("currentquestion", mCurrentQuestion)
+        //might not need to pass score to bundle
         args.putInt("score", mCurrentScore)
         fragment.setArguments(args)
         fm.beginTransaction()
@@ -158,7 +160,6 @@ class QuestionsActivity : AppCompatActivity() {
         var fragment = QuestionFragment.newInstance()
         val args = Bundle()
         args.putSerializable("Question", mQuestionArray[mCurrentQuestion])
-        args.putInt("currentquestion", mCurrentQuestion)
         args.putInt("score", mCurrentScore)
         fragment.setArguments(args)
         fm.beginTransaction()

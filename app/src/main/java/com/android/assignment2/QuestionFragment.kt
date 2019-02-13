@@ -23,7 +23,6 @@ class QuestionFragment : Fragment() {
     private var mOption3: String =""
     private var mOption4: String =""
     private var mCurrentScore: Int = 0
-    private var mCurrentQuestion: Int = 0
     private var mCurrentAnswer: String = ""
 
     companion object {
@@ -50,7 +49,6 @@ class QuestionFragment : Fragment() {
         mOption3 = getString(question.option3)
         mOption4 = getString(question.option4)
         mCurrentScore = bundle!!.getInt("score", 0)
-        mCurrentQuestion = bundle!!.getInt("currentquestion", 0)
 
 
         Log.d(TAG, "Score: $mCurrentScore Question: $mQuestion Answer: $mCurrentAnswer")
