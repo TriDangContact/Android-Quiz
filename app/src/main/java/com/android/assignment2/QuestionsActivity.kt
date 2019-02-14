@@ -34,29 +34,7 @@ class QuestionsActivity : AppCompatActivity() {
 
 
         //display the question fragment if it's not the last question yet
-        //NOTE: doesn't work yet, it continues to loop till the last question, not making any new fragment
         addNewFragment()
-//        val fm: FragmentManager = supportFragmentManager
-//        var fragment: Fragment? = fm.findFragmentById(R.id.fragment_container)
-
-//        if (fragment == null) {
-//            addNewFragment(fragment)
-////            Log.d(TAG, "Created a fragment")
-////            fragment = QuestionFragment.newInstance()
-////            val args = Bundle()
-////            args.putSerializable("Question", mQuestionArray[mCurrentQuestion])
-////            args.putInt("currentquestion", mCurrentQuestion)
-////            args.putInt("score", mCurrentScore)
-////            fragment.setArguments(args)
-////            fm.beginTransaction()
-////                .add(R.id.fragment_container, fragment)
-////                .commit()
-//        }
-//        else {
-//            Log.d(TAG, "Fragment already exists")
-//            Log.d(TAG, "$mCurrentQuestion")
-//            //need to pop the fragment off the stack
-//        }
     }
 
     override fun onStart() {
