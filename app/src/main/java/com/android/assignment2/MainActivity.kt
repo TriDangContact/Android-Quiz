@@ -1,12 +1,15 @@
 package com.android.assignment2
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
-import android.nfc.Tag
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,10 +23,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
+        //check if user info already exists in internal storage
+        if (fileExist(FILENAME)) {
+            retrieveUserInfo()
+            updateUserInfoView()
+        }
 
         doneButton.setOnClickListener{
-            //user info is saved permanently
+            saveUserInfo()
         }
 
         quizButton.setOnClickListener{
@@ -53,11 +60,57 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //update the View with current data
+    private fun updateUserInfoView() {
+        firstNameView.setText(mFirstName)
+        lastNameView.setText(mLastName)
+        nickNameView.setText(mNickName)
+        ageView.setText(mAge.toString())
+    }
 
+
+    //reads data from internal file storage and retrieve it
+    private fun retrieveUserInfo() {
+        val context = application
+        var fileIS = context.openFileInput(FILENAME)
+        var inputSR = InputStreamReader(fileIS)
+        var bufferedReader = BufferedReader(inputSR)
+        mFirstName = bufferedReader.readLine()
+        mLastName = bufferedReader.readLine()
+        mNickName = bufferedReader.readLine()
+        mAge = bufferedReader.readLine().toInt()
+
+        Log.d(TAG, "$mFirstName, $mLastName, $mNickName, $mAge")
+    }
+
+    //save data into internal file storage
+    private fun saveUserInfo() {
+        mFirstName = firstNameView.text.toString()
+        mLastName = lastNameView.text.toString()
+        mNickName = nickNameView.text.toString()
+        mAge = ageView.text.toString().toInt()
+        Log.d(TAG, "First Name: $mFirstName Last Name: $mLastName Nickname: $mNickName Age: $mAge")
+
+        val context = application
+        context.openFileOutput(FILENAME, Context.MODE_PRIVATE).use {
+            it.write("$mFirstName\n".toByteArray())
+            it.write("$mLastName\n".toByteArray())
+            it.write("$mNickName\n".toByteArray())
+            it.write("$mAge\n".toByteArray())
+        }
+        Toast.makeText(this, R.string.infoSaved_toast, Toast.LENGTH_SHORT).show()
+    }
+
+    //check if an internal file exists already
+    fun fileExist(fname: String): Boolean {
+        val file = baseContext.getFileStreamPath(fname)
+        return file.exists()
+    }
 
     companion object {
         private const val TAG = "MainActivity"
         private const val REQUEST_CODE_QUESTIONS = 0
         private const val EXTRA_SCORE = "com.android.assignment2.score"
+        private const val FILENAME = "user_info.txt"
     }
 }
